@@ -6,6 +6,8 @@ O arquivo `Painel_Produtividade_AGHU.xlsm` já vem pronto com:
   arquivo do Período 1* e *Selecionar arquivo do Período 2*.
 - Os botões já estão associados aos nomes de macro `ImportadorAGHU.ImportarPeriodo1`
   e `ImportadorAGHU.ImportarPeriodo2`.
+- Um terceiro botão na aba **Categorias**: *Atualizar Lista de Categorias*, já
+  associado ao nome de macro `CategoriasAGHU.SincronizarCategorias`.
 
 O que falta, **uma única vez**, é carregar o código dessas macros dentro do
 arquivo. Isso não pode ser feito de fora do Excel (não é possível gravar um
@@ -24,12 +26,16 @@ fazer isto no Windows, com o Excel aberto:
    → **Import File...**
 5. Selecione o arquivo `macros/ImportadorAGHU.bas` (está na mesma pasta deste
    guia, dentro do repositório/pasta entregue).
-6. Feche o Editor do VBA (`Alt+Q` ou botão fechar).
-7. Salve o arquivo normalmente (`Ctrl+S`), mantendo o formato **Excel
+6. Repita os passos 4 e 5 selecionando agora `macros/CategoriasAGHU.bas` — os
+   dois módulos precisam ser importados (aparecem como dois itens separados em
+   "Modules" no painel do projeto).
+7. Feche o Editor do VBA (`Alt+Q` ou botão fechar).
+8. Salve o arquivo normalmente (`Ctrl+S`), mantendo o formato **Excel
    Habilitado para Macro (*.xlsm)**.
-8. Feche e reabra o arquivo. Agora, ao abrir, clique em **Habilitar
-   Conteúdo** na faixa amarela — os dois botões da aba PAINEL já vão
-   funcionar normalmente a partir daí, todo mês, sem repetir esse processo.
+9. Feche e reabra o arquivo. Agora, ao abrir, clique em **Habilitar
+   Conteúdo** na faixa amarela — os três botões (dois na aba PAINEL, um na
+   aba Categorias) já vão funcionar normalmente a partir daí, todo mês, sem
+   repetir esse processo.
 
 ## Se os botões não funcionarem mesmo depois de importar o módulo
 
@@ -54,7 +60,7 @@ pelo próprio Excel. Não existe uma forma confiável de gerar esse binário
 fora do Excel real — qualquer ferramenta que tente fazer isso corre o risco
 de gerar um arquivo corrompido, que o Excel recusaria abrir ou "repararia"
 apagando as macros na primeira tentativa de abertura. Por isso a estrutura
-inteira da planilha (abas, fórmulas, formatação, os dois botões já
+inteira da planilha (abas, fórmulas, formatação, os três botões já
 posicionados e já referenciando os nomes de macro certos) veio pronta, e
-apenas a importação do código-fonte (arquivo `.bas`, texto simples) precisa
-ser feita dentro do Excel, uma única vez.
+apenas a importação do código-fonte (dois arquivos `.bas`, texto simples)
+precisa ser feita dentro do Excel, uma única vez.
