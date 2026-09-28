@@ -121,6 +121,32 @@ Private Sub ImportarDados(ByVal nomeAba As String, ByVal rotulo As String, ByVal
         End If
     Next linhaDados
 
+    ' 5-c) Normalizar as colunas numericas (Cod. SUS, Prontuario, Qtd, Consulta)
+    '      para NUMERO de verdade. O AGHU pode exportar essas colunas como
+    '      texto em algumas linhas e como numero em outras, dentro do MESMO
+    '      arquivo (a mesma inconsistencia que acontece com a coluna Data).
+    '      Se isso ficar misturado, as formulas de COUNTIFS/SUMIFS que
+    '      comparam a coluna Consulta (F) e somam a coluna Qtd (E) deixam de
+    '      reconhecer que duas linhas sao do mesmo atendimento - porque, no
+    '      Excel, o texto "50404199" e o numero 50404199 nao sao sempre
+    '      tratados como iguais nessas formulas. Isso fazia o indicador
+    '      "Atendimento com mais de 1 procedimento" ficar zerado mesmo
+    '      havendo procedimentos repetidos - de forma inconsistente entre
+    '      Periodo 1 e Periodo 2, dependendo de como cada arquivo do AGHU
+    '      veio exportado.
+    Dim colunasNumericas As Variant
+    Dim idx As Long
+    colunasNumericas = Array(1, 3, 5, 6) ' A=Cod.SUS, C=Prontuario, E=Qtd, F=Consulta
+    For linhaDados = 1 To UBound(dadosArray, 1)
+        For idx = LBound(colunasNumericas) To UBound(colunasNumericas)
+            If VarType(dadosArray(linhaDados, colunasNumericas(idx))) = vbString Then
+                If IsNumeric(dadosArray(linhaDados, colunasNumericas(idx))) Then
+                    dadosArray(linhaDados, colunasNumericas(idx)) = CDbl(dadosArray(linhaDados, colunasNumericas(idx)))
+                End If
+            End If
+        Next idx
+    Next linhaDados
+
     ' 6) Fechar o arquivo de origem sem salvar
     wbOrigem.Close SaveChanges:=False
     Set wbOrigem = Nothing
