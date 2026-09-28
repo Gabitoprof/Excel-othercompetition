@@ -101,6 +101,26 @@ Private Sub ImportarDados(ByVal nomeAba As String, ByVal rotulo As String, ByVal
     ' 5) Ler os dados de origem (colunas A a F) para memoria
     dadosArray = wsOrigem.Range("A2:F" & ultimaLinhaOrigem).Value
 
+    ' 5-b) Normalizar a coluna D (Data Realizado) para texto "dd/mm/aaaa hh:mm".
+    '      O AGHU normalmente exporta essa coluna como TEXTO, mas algumas
+    '      linhas do arquivo podem vir como data/hora de verdade (o Excel
+    '      as vezes reconhece automaticamente parte dos valores ao gerar o
+    '      arquivo). Quando isso acontece, o VBA le a celula como um valor
+    '      de data (Date), e simplesmente copiar esse valor adiante faria o
+    '      Excel reescreve-lo como texto de acordo com a configuracao
+    '      regional do Windows (podendo inverter dia e mes). Aqui, qualquer
+    '      valor que chegue como Date e explicitamente formatado como texto
+    '      "dd/mm/aaaa hh:mm" usando o Format() do VBA - que usa sempre essa
+    '      ordem fixa, independente da configuracao regional do computador.
+    '      Linhas que ja chegam como texto (o caso mais comum) nao sao
+    '      alteradas aqui.
+    Dim linhaDados As Long
+    For linhaDados = 1 To UBound(dadosArray, 1)
+        If VarType(dadosArray(linhaDados, 4)) = vbDate Then
+            dadosArray(linhaDados, 4) = Format(dadosArray(linhaDados, 4), "dd/mm/yyyy hh:nn")
+        End If
+    Next linhaDados
+
     ' 6) Fechar o arquivo de origem sem salvar
     wbOrigem.Close SaveChanges:=False
     Set wbOrigem = Nothing
