@@ -109,6 +109,16 @@ Private Sub ImportarDados(ByVal nomeAba As String, ByVal rotulo As String, ByVal
     Set wsDestino = ThisWorkbook.Sheets(nomeAba)
     wsDestino.Range("A2:F" & (MAX_ROWS + 1)).ClearContents
 
+    ' 7-b) Forcar a coluna D (Data Realizado) como TEXTO antes de escrever.
+    '      Sem isso, o Excel reinterpreta o texto "dd/mm/aaaa hh:mm" vindo do
+    '      AGHU de acordo com a configuracao regional do Windows: em um
+    '      computador configurado para EUA (mm/dd/aaaa), datas ambiguas
+    '      (dia <= 12) sao gravadas com dia e mes invertidos. Mantendo a
+    '      coluna como texto, o valor original do AGHU e preservado
+    '      exatamente, e a formula da coluna G (que ja sabe interpretar
+    '      texto "dd/mm/aaaa") continua funcionando normalmente.
+    wsDestino.Range("D2:D" & (MAX_ROWS + 1)).NumberFormat = "@"
+
     ' 8) Escrever os dados novos
     wsDestino.Range("A2").Resize(numLinhas, 6).Value = dadosArray
 
