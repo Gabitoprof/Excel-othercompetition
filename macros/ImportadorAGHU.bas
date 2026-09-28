@@ -23,15 +23,15 @@ Option Explicit
 ' =====================================================================
 
 Private Const EXPECTED_HEADERS As String = _
-    "C√≥d. SUS|Descri√ß√£o|Prontu√°rio|Data Realizado|Qtd|Consulta"
+    "CÛd. SUS|DescriÁ„o|Prontu·rio|Data Realizado|Qtd|Consulta"
 Private Const MAX_ROWS As Long = 12000   ' linhas de dados suportadas (linha 2 ate 12001)
 
 Sub ImportarPeriodo1()
-    ImportarDados "Dados_Periodo1", "Per√≠odo 1", "B60"
+    ImportarDados "Dados_Periodo1", "PerÌodo 1", "B60"
 End Sub
 
 Sub ImportarPeriodo2()
-    ImportarDados "Dados_Periodo2", "Per√≠odo 2", "B61"
+    ImportarDados "Dados_Periodo2", "PerÌodo 2", "B61"
 End Sub
 
 Private Sub ImportarDados(ByVal nomeAba As String, ByVal rotulo As String, ByVal celulaStatus As String)
@@ -68,11 +68,11 @@ Private Sub ImportarDados(ByVal nomeAba As String, ByVal rotulo As String, ByVal
     If Not CabecalhoValido(wsOrigem) Then
         wbOrigem.Close SaveChanges:=False
         RestaurarAplicacao
-        MsgBox "O arquivo selecionado n√£o tem o formato esperado." & vbCrLf & vbCrLf & _
+        MsgBox "O arquivo selecionado n„o tem o formato esperado." & vbCrLf & vbCrLf & _
                "As colunas A a F da primeira planilha do arquivo devem ser, nesta ordem:" & vbCrLf & _
                Replace(EXPECTED_HEADERS, "|", ", ") & vbCrLf & vbCrLf & _
-               "Verifique se voc√™ selecionou o arquivo certo, exportado do AGHU para " & rotulo & ", e tente novamente.", _
-               vbExclamation, "Arquivo inv√°lido"
+               "Verifique se vocÍ selecionou o arquivo certo, exportado do AGHU para " & rotulo & ", e tente novamente.", _
+               vbExclamation, "Arquivo inv·lido"
         Exit Sub
     End If
 
@@ -83,7 +83,7 @@ Private Sub ImportarDados(ByVal nomeAba As String, ByVal rotulo As String, ByVal
     If numLinhas <= 0 Then
         wbOrigem.Close SaveChanges:=False
         RestaurarAplicacao
-        MsgBox "O arquivo selecionado n√£o cont√©m nenhuma linha de dados abaixo do cabe√ßalho.", _
+        MsgBox "O arquivo selecionado n„o contÈm nenhuma linha de dados abaixo do cabeÁalho.", _
                vbExclamation, "Arquivo vazio"
         Exit Sub
     End If
@@ -93,7 +93,7 @@ Private Sub ImportarDados(ByVal nomeAba As String, ByVal rotulo As String, ByVal
         RestaurarAplicacao
         MsgBox "O arquivo selecionado tem " & numLinhas & " linhas de dados, acima do limite" & vbCrLf & _
                "atualmente preparado nesta planilha (" & MAX_ROWS & " linhas)." & vbCrLf & vbCrLf & _
-               "Fale com o suporte t√©cnico antes de importar este arquivo.", _
+               "Fale com o suporte tÈcnico antes de importar este arquivo.", _
                vbCritical, "Limite excedido"
         Exit Sub
     End If
@@ -112,7 +112,7 @@ Private Sub ImportarDados(ByVal nomeAba As String, ByVal rotulo As String, ByVal
     ' 8) Escrever os dados novos
     wsDestino.Range("A2").Resize(numLinhas, 6).Value = dadosArray
 
-    ' 9) Registrar resumo da importa√ß√£o na aba PAINEL
+    ' 9) Registrar resumo da importaÁ„o na aba PAINEL
     On Error Resume Next
     ThisWorkbook.Sheets("PAINEL").Range(celulaStatus).Value = _
         rotulo & ": " & numLinhas & " linha(s) importada(s) em " & Format(Now, "dd/mm/yyyy hh:mm")
@@ -120,9 +120,9 @@ Private Sub ImportarDados(ByVal nomeAba As String, ByVal rotulo As String, ByVal
 
     RestaurarAplicacao
 
-    MsgBox "Importa√ß√£o conclu√≠da para " & rotulo & "!" & vbCrLf & vbCrLf & _
+    MsgBox "ImportaÁ„o concluÌda para " & rotulo & "!" & vbCrLf & vbCrLf & _
            numLinhas & " linha(s) importada(s) para a aba """ & nomeAba & """.", _
-           vbInformation, "Importa√ß√£o conclu√≠da"
+           vbInformation, "ImportaÁ„o concluÌda"
 
     Exit Sub
 
@@ -133,8 +133,8 @@ TratarErro:
         wbOrigem.Close SaveChanges:=False
         On Error GoTo 0
     End If
-    MsgBox "Ocorreu um erro durante a importa√ß√£o:" & vbCrLf & vbCrLf & Err.Description, _
-           vbCritical, "Erro na importa√ß√£o"
+    MsgBox "Ocorreu um erro durante a importaÁ„o:" & vbCrLf & vbCrLf & Err.Description, _
+           vbCritical, "Erro na importaÁ„o"
 End Sub
 
 Private Function CabecalhoValido(ByVal ws As Worksheet) As Boolean
